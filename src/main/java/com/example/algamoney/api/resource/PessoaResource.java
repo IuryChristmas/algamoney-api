@@ -18,41 +18,41 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.algamoney.api.event.RecursoCriadoEvent;
-import com.example.algamoney.api.model.Categoria;
-import com.example.algamoney.api.repository.CategoriaRepository;
+import com.example.algamoney.api.model.Pessoa;
+import com.example.algamoney.api.repository.PessoaRepository;
 
 @RestController
-@RequestMapping("/categorias")
-public class CategoriaResource {
+@RequestMapping("/pessoas")
+public class PessoaResource {
 	
 	@Autowired
-	private CategoriaRepository categoriaRepository;
+	private PessoaRepository pessoaRepository;
 	
 	@Autowired
 	private ApplicationEventPublisher publisher;
 	
 	@GetMapping
-	public List<Categoria> listar() {
-		return categoriaRepository.findAll();
-	}
-
-	
-	@PostMapping
-	public ResponseEntity<Categoria> criar(@Valid @RequestBody Categoria cagetoria, HttpServletResponse response) {
-		Categoria categoriaSalva = categoriaRepository.save(cagetoria);
-		
-		publisher.publishEvent(new RecursoCriadoEvent(this, response, categoriaSalva.getCodigo()));
-		return ResponseEntity.status(HttpStatus.CREATED).body(categoriaSalva);
+	public List<Pessoa> listar() {
+		return pessoaRepository.findAll();
 	}
 	
 	@GetMapping("/{codigo}")
 	public ResponseEntity<?> buscarPeloCodigo(@PathVariable Long codigo) {
-		Optional<Categoria> categoria = categoriaRepository.findById(codigo);
+		Optional<Pessoa> pessoa = pessoaRepository.findById(codigo);
 		
-		if(!categoria.isPresent()) {
+		if(!pessoa.isPresent()) {
 			return ResponseEntity.notFound().build();
 		}
 		
-		return ResponseEntity.ok().body(categoria);
+		return ResponseEntity.ok().body(pessoa);
 	}
+	
+	@PostMapping
+	public ResponseEntity<Pessoa> criar(@Valid @RequestBody Pessoa pessoa, HttpServletResponse response) {
+		Pessoa pessoaSalva = pessoaRepository.save(pessoa);
+		
+		publisher.publishEvent(new RecursoCriadoEvent(this, response, pessoaSalva.getCodigo()));
+		return ResponseEntity.status(HttpStatus.CREATED).body(pessoaSalva);		
+	}
+	
 }
