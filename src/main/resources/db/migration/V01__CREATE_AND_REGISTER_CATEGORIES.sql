@@ -1,6 +1,7 @@
 CREATE TABLE IF NOT EXISTS categoria (
 	codigo serial,
-	nome varchar(50) not null
+	nome varchar(50) not null,
+	PRIMARY KEY (codigo)
 );
 
 INSERT INTO categoria (nome) VALUES ('Lazer');
