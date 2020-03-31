@@ -8,8 +8,7 @@ bairro varchar(100),
 cep varchar(15),
 cidade varchar(100),
 estado varchar(100),
-ativo boolean not null,
-PRIMARY KEY (codigo)
+ativo boolean not null
 );
 
 insert into pessoa (nome, logradouro, numero, bairro, cep, cidade, estado, ativo) values ('Iury', 'R Tarrafas', '97', 'Barra do Ceará', '60332520', 'Fortaleza', 'CE', true);
