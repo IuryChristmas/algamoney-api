@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -98,5 +99,18 @@ public class LancamentoResource {
 	@PreAuthorize("hasAnyAuthority('ROLE_PESQUISAR_LANCAMENTO')")
 	public Page<ResumoLancamento> resumir(LancamentoFilter lancamentoFilter, Pageable pageable) {
 		return lancamentoRepository.resumir(lancamentoFilter, pageable);
+	}
+	
+	@PutMapping("/{codigo}")
+	@PreAuthorize("hasAnyAuthority('ROLE_CADASTRAR_LANCAMENTO')")
+	public ResponseEntity<Lancamento> atualizar(@PathVariable Long codigo, @Valid @RequestBody Lancamento lancamento) {
+		try {
+			Lancamento lancamentoAtualizado = lancamentoService.atualizar(codigo, lancamento);
+			
+			return ResponseEntity.ok(lancamentoAtualizado);
+		} catch(IllegalArgumentException e) {
+			return ResponseEntity.notFound().build();
+		}
+		
 	}
 }
